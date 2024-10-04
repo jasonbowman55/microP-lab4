@@ -4,11 +4,25 @@
 
 
 #include "STM32L432KC_RCC.h"
+#include <stdint.h>
 
 //TIM16 base register decleration
 #define TIM16_BASE (0x40014400UL)
-#define TIM16_CCMR1 (*(uint32_t *)(TIM16_BASE + 0x18)) // --- WHY DOESNT IT LIKE IT WHEN I TAKE OUT THE FIRST *
 
+#define TIM16_CCMR1offset (0x16)
+#define TIM16_CCMR1 (*(uint32_t *)(TIM16_BASE + TIM16_CCMR1offset)) // --- WHY DOESNT IT LIKE IT WHEN I TAKE OUT THE FIRST *
+
+//TIM16 control register
+#define TIM16_CR1offset (0x00)
+#define TIM16_CR1 (*(uint32_t*)(TIM16_BASE + TIM16_CR1offset))
+
+//TIM16 prescalar register
+#define TIM16_PSCoffset (0x28)
+#define TIM16_PSC (*(uint32_t*)(TIM16_BASE + TIM16_PSCoffset))
+
+//TIM16 prescalar register
+#define TIM16_PSCoffset (0x28)
+#define TIM16_PSC (*(uint32_t*)(TIM16_BASE + TIM16_PSCoffset))
 
 // Pitch in Hz, duration in ms
 const int notes[][2] = {
@@ -123,7 +137,22 @@ const int notes[][2] = {
 {  0,	0}};
 
 int main(void) {
+//TIM16 prescalar register
+  TIM16_PSC |= (0b1110110010111110 << 0);
+
+//CLEAR / enable up counter in TIM16 block
+  TIM16_CR1 &= ~(1 << 0);
+
+//enable preload ARR
+  TIM16_CR1 |= (1 << 7);
+
+//set ARR based on a frequency devision
+
+// setting main DTG block output as TIM16ch1
+  
+
 //set SYSCLK as PLL
+
   //set SW as 11
   RCC->CFGR |= (0b11 << 0);
 
