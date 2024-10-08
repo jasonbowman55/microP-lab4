@@ -6,23 +6,24 @@
 #include "STM32L432KC_RCC.h"
 #include <stdint.h>
 
-//TIM16 base register decleration
-#define TIM16_BASE (0x40014400UL)
+// TIM16
+#define TIM16_BASE (0x40014400UL) // TIM16 BASE register
+#define TIM16_CR1 (*(uint32_t*)(TIM16_BASE + 0x00)) // control register
+#define TIM16_CCMR1 (*(uint32_t *)(TIM16_BASE + 0x18)) // capture compare MODE regiter
+#define TIM16_CCER (*(uint32_t*)(TIM16_BASE + 0x20)) // capture compare enable register
+#define TIM16_PSC (*(uint32_t*)(TIM16_BASE + 0x28)) // prescalar register
+#define TIM16_ARR (*(uint32_t*)(TIM16_BASE + 0x2C)) // auto reload register
+#define TIM16_EGR (*(uint32*)(TIM16_BASE + 0x14)) // event generation register
+#define TIM16_CCR1 (*(uint32*)(TIM16_BASE + 0x32)) // capture compare register
+#define TIM16_BDTR (*(uint32*)(TIM16_BASE + 0x44)) // break & deadtime state register
 
-#define TIM16_CCMR1offset (0x16)
-#define TIM16_CCMR1 (*(uint32_t *)(TIM16_BASE + TIM16_CCMR1offset)) // --- WHY DOESNT IT LIKE IT WHEN I TAKE OUT THE FIRST *
+// GPIO
+#define GPIOA_BASE (0x48000000)
+#define GPIOA_MODER (*(GPIOA_BASE)(TIM16_BASE + 0x00)) 
+#define GPIOA_OSPEEDR (*(GPIOA_BASE + 0x08)
+#define GPIOA_AFRL      (GPIOA_BASE + 0x20)
 
-//TIM16 control register
-#define TIM16_CR1offset (0x00)
-#define TIM16_CR1 (*(uint32_t*)(TIM16_BASE + TIM16_CR1offset))
-
-//TIM16 prescalar register
-#define TIM16_PSCoffset (0x28)
-#define TIM16_PSC (*(uint32_t*)(TIM16_BASE + TIM16_PSCoffset))
-
-//TIM16 prescalar register
-#define TIM16_PSCoffset (0x28)
-#define TIM16_PSC (*(uint32_t*)(TIM16_BASE + TIM16_PSCoffset))
+// Access RCC rubregisters via .h file
 
 // Pitch in Hz, duration in ms
 const int notes[][2] = {
@@ -136,27 +137,99 @@ const int notes[][2] = {
 {440,	500},
 {  0,	0}};
 
-int main(void) {
-//TIM16 prescalar register
-  TIM16_PSC |= (0b1110110010111110 << 0);
 
-//CLEAR / enable up counter in TIM16 block
+// DELAY
+void delay(int ms) { // take input ms from any delay calls
+  while (ms-- > 0) { // while ms > 0, continue. decreament each ms, once ms=0, leave loop
+    volatile int x=80000; // x clk cycles = 1ms
+    while (x-- > 0) // while x > 0, continue. decreament x each clk. once x=0, leave loop
+      _asm("nop"); // nothing happens when decreamenting 0
+  }
+}
+////////
+
+// We must enable the GPIO path and TIM16 in main so that our path is redefined everytime we reset the system in between each played note
+
+void GPIOinit() {
+  RCC->AHB2ENR |= (1 << 0); // follow clk tree, en GPIOA clk input from SYSCLK (PLL)
+
+  GPIOA_AFRL &= ~(0b1111 << 24); // clear AF14 in GPIO alternate function
+  GPIOA_AFRL |= (0b1110 << 24); // set GPIO connect to AF14
+
+  GPIOA_OSPEEDR |= (0b11 << 12); // set pin PA6 as q fast output
+
+  GPIOA_MODER &= ~(0b11 << 12); // set pin PA6 MODER
+  GPIOA_MODER |= (0b10 << 12); // se pin PA6 to alternate function
+}
+
+void TIMinit() {
+  RCC->APB2ENR |= (1 << 17); // enable peripheral clk to be TIM16
+
+  TIM16_CCMR1 &= ~(0b111 << 4); // clear OC1M PWM output mode
+  TIM16_CCMR1 |= (0b110 << 4); // set ch1 to PWM out
+
+  TIM16_CCMR1 |= (1 << 3); // enable preload register
+
+  TIM16_CR1 |= (1 << 7); // enable auto-load register as "buffered"
+
+  TIM16_EGR |= (1 << 0); // counter block enabled
+
+  TIM16_PSC &= ~(65535); // clear PSC
+  TIM16_PSC |= (60606); // set prescale such that max period length corresponds to lowest freq for 1 period (80MHz / (660Hz*2))
+
+  TIM16_CCR1 |= (30303); // set duty cycle to be half the limit of the counter (50%ds)
+
+  TIM16_CCER |= (1 << 2); // requirement for MOE to effectively output
+
+  TIM16_BDTR |= (1 << 15); // en Main Output Enable (MOE) in Dead Time Register (DTR)
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+// Function that converts frequency input into 
+voit FREQset(int freq) { // take a desired input frequency "freq"
+  int ARRnew = (1320/freq);
+  TIM16_ARR |= ARRnew;
+  TIM16_CCR1 |= (ARRnew/2);
+}
+///////////////////////////
+
+// enable counter block in TIM16 function
+void CNTen() {
+  TIM16_CR1 |= (1 << 0);
+}
+////////////////////////
+
+// disable counter block in TIM16 function
+void CNTdisable() {
   TIM16_CR1 &= ~(1 << 0);
+}
+////////////////////////
 
-//enable preload ARR
-  TIM16_CR1 |= (1 << 7);
+// play notes as long as there is a frequency input > 0
+void playNote(int freq, int time) {
+  if (freq != 0) {
+    FREQset(freq);
+    CNTen();
+    delay(time);
+    CNTdisable();
+  } else {
+    delay(time);
+  }
+}
 
-//set ARR based on a frequency devision
+int main(void) {
+ 
+  TIMinit();
+  GPIOinit();
 
-// setting main DTG block output as TIM16ch1
+  delay(1000);
+
+  for (int i = 0; i < (sizeof(notes) / sizeof(notes[0])); i++) {
+    playNote(notes[i][0], notes[i][1]);
+  }
+
+  CNTen();
+  CNTdisable();
   
-
-//set SYSCLK as PLL
-
-  //set SW as 11
-  RCC->CFGR |= (0b11 << 0);
-
-  //channel-mode 1 PWM output
-  TIM16_CCMR1 |= (0b0110 << 4);
-	
 }
