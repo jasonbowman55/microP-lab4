@@ -43,11 +43,11 @@ void configurePLL() {
         while((RCC->CR >> 25 & 1) != 0); //wait for PLL lock --- DOES THIS STOP THE PROGRAM?
 
      // enable AHB1
-     //   RCC->AHB1ENR &= ~(1 << 12);
-     //   RCC->AHB1ENR |= (1 << 12);
-    
+        RCC->AHB1ENR &= ~(1 << 12);
+        RCC->AHB1ENR |= (1 << 12);
+  
     // enable APB1
-     //   RCC->APB2ENR |= (1 << 17);
+      //  RCC->APB1ENR |= (1 << 17);
 }
 
 void configureClock(){

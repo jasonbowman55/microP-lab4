@@ -7,21 +7,21 @@
 #include <stdint.h>
 
 // TIM16
-#define TIM16_BASE (0x40014400UL) // TIM16 BASE register
-#define TIM16_CR1 (*(uint32_t*)(TIM16_BASE + 0x00)) // control register
+#define TIM16_BASE (0x40014400) // TIM16 BASE register
+#define TIM16_CR1 (*(uint16_t*)(TIM16_BASE + 0x00)) // control register
 #define TIM16_CCMR1 (*(uint32_t *)(TIM16_BASE + 0x18)) // capture compare MODE regiter
-#define TIM16_CCER (*(uint32_t*)(TIM16_BASE + 0x20)) // capture compare enable register
-#define TIM16_PSC (*(uint32_t*)(TIM16_BASE + 0x28)) // prescalar register
-#define TIM16_ARR (*(uint32_t*)(TIM16_BASE + 0x2C)) // auto reload register
-#define TIM16_EGR (*(uint32_t*)(TIM16_BASE + 0x14)) // event generation register
-#define TIM16_CCR1 (*(uint32_t*)(TIM16_BASE + 0x32)) // capture compare register
+#define TIM16_CCER (*(uint16_t*)(TIM16_BASE + 0x20)) // capture compare enable register
+#define TIM16_PSC (*(uint16_t*)(TIM16_BASE + 0x28)) // prescalar register
+#define TIM16_ARR (*(uint16_t*)(TIM16_BASE + 0x2C)) // auto reload register
+#define TIM16_EGR (*(uint16_t*)(TIM16_BASE + 0x14)) // event generation register
+#define TIM16_CCR1 (*(uint16_t*)(TIM16_BASE + 0x34)) // capture compare register
 #define TIM16_BDTR (*(uint32_t*)(TIM16_BASE + 0x44)) // break & deadtime state register
 
 // GPIO
 #define GPIOA_BASE (0x48000000)
-#define GPIOA_MODER (*(uint32_t*)(GPIOA_BASE + 0x00)) 
-#define GPIOA_OSPEEDR (*(uint32_t*)(GPIOA_BASE + 0x08))
-#define GPIOA_AFRL (*(uint32_t*)(GPIOA_BASE + 0x20))
+#define GPIOA_MODER (*(uint32_t*)(GPIOA_BASE + 0x00)) // GPIO mode register
+#define GPIOA_OSPEEDR (*(uint32_t*)(GPIOA_BASE + 0x08)) // GPIO register speed select
+#define GPIOA_AFRL (*(uint32_t*)(GPIOA_BASE + 0x20)) // GPIO alternate function control register
 
 // Access RCC rubregisters via .h file
 
@@ -141,7 +141,7 @@ const int notes[][2] = {
 // DELAY
 void delay(int ms) { // take input ms from any delay calls
   while (ms-- > 0) { // while ms > 0, continue. decreament each ms, once ms=0, leave loop
-    volatile int x=80000; // x clk cycles = 1ms
+    volatile int x=887; // x clk cycles = 1ms
     while (x-- > 0) // while x > 0, continue. decreament x each clk. once x=0, leave loop
       __asm__("NOP"); // nothing happens when decreamenting 0
   }
@@ -174,21 +174,22 @@ void TIMinit() {
 
   TIM16_EGR |= (1 << 0); // counter block enabled
 
+  TIM16_CCR1 |= (32767); // set duty cycle to be half the limit of the counter (50%ds)
+
   TIM16_PSC &= ~(65535); // clear PSC
-  TIM16_PSC |= (60606); // set prescale such that max period length corresponds to lowest freq for 1 period (80MHz / (660Hz*2))
-
-  TIM16_CCR1 |= (30303); // set duty cycle to be half the limit of the counter (50%ds)
-
-  TIM16_CCER |= (1 << 0); // requirement for MOE to effectively output
+  TIM16_PSC |= (255); // set prescale such that max period length corresponds to lowest freq for 1 period (80MHz / (660Hz*2))
 
   TIM16_BDTR |= (1 << 15); // en Main Output Enable (MOE) in Dead Time Register (DTR)
+
+  TIM16_CCER |= (1 << 0); // requirement for MOE to effectively output 
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
 
 // Function that converts frequency input into 
 void FREQset(int freq) { // take a desired input frequency "freq"
-  int ARRnew = (1320/freq);
+  int ARRnew = (31250/freq);
+  TIM16_ARR &= ~(65535);
   TIM16_ARR |= ARRnew;
   TIM16_CCR1 |= (ARRnew/2);
 }
@@ -219,9 +220,9 @@ void playNote(int freq, int time) {
 }
 
 int main(void) {
- 
-  TIMinit();
+  configureClock();
   GPIOinit();
+  TIMinit();
 
   delay(1000);
 
