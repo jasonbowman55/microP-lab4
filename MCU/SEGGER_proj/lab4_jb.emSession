@@ -57,11 +57,11 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="221" useTextEdit="1" path="main.c" left="0" top="201" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="22" y="191" useTextEdit="1" path="main.c" left="0" selected="1" top="164" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="STM32L432KC_GPIO.c" left="0" top="0" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="STM32L432KC_GPIO.h" left="0" top="0" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="7" y="49" useTextEdit="1" path="STM32L432KC_RCC.c" left="0" selected="1" top="29" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="7" y="49" useTextEdit="1" path="STM32L432KC_RCC.c" left="0" top="2" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="26" y="80" useTextEdit="1" path="STM32L432KC_RCC.h" left="0" top="46" codecName="Default"/>
  </Files>
- <EMStudioWindow activeProject="lab4_jb" fileDialogDefaultFilter="*" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="/Users/jasonbowman/Desktop/Micro-Ps/microP-lab4/MCU/SEGGER_proj" debugSearchPath="" autoConnectCapabilities="3711"/>
+ <EMStudioWindow activeProject="lab4_jb" fileDialogDefaultFilter="*" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="/Users/jasonbowman/Desktop/Micro-Ps/microP-lab4/MCU/SEGGER_proj" debugSearchPath="" autoConnectCapabilities="3199"/>
 </session>
