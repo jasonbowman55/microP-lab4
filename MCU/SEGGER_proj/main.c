@@ -13,15 +13,15 @@
 #define TIM16_CCER (*(uint32_t*)(TIM16_BASE + 0x20)) // capture compare enable register
 #define TIM16_PSC (*(uint32_t*)(TIM16_BASE + 0x28)) // prescalar register
 #define TIM16_ARR (*(uint32_t*)(TIM16_BASE + 0x2C)) // auto reload register
-#define TIM16_EGR (*(uint32*)(TIM16_BASE + 0x14)) // event generation register
-#define TIM16_CCR1 (*(uint32*)(TIM16_BASE + 0x32)) // capture compare register
-#define TIM16_BDTR (*(uint32*)(TIM16_BASE + 0x44)) // break & deadtime state register
+#define TIM16_EGR (*(uint32_t*)(TIM16_BASE + 0x14)) // event generation register
+#define TIM16_CCR1 (*(uint32_t*)(TIM16_BASE + 0x32)) // capture compare register
+#define TIM16_BDTR (*(uint32_t*)(TIM16_BASE + 0x44)) // break & deadtime state register
 
 // GPIO
 #define GPIOA_BASE (0x48000000)
-#define GPIOA_MODER (*(GPIOA_BASE)(TIM16_BASE + 0x00)) 
-#define GPIOA_OSPEEDR (*(GPIOA_BASE + 0x08)
-#define GPIOA_AFRL      (GPIOA_BASE + 0x20)
+#define GPIOA_MODER (*(uint32_t*)(GPIOA_BASE + 0x00)) 
+#define GPIOA_OSPEEDR (*(uint32_t*)(GPIOA_BASE + 0x08))
+#define GPIOA_AFRL (*(uint32_t*)(GPIOA_BASE + 0x20))
 
 // Access RCC rubregisters via .h file
 
@@ -143,7 +143,7 @@ void delay(int ms) { // take input ms from any delay calls
   while (ms-- > 0) { // while ms > 0, continue. decreament each ms, once ms=0, leave loop
     volatile int x=80000; // x clk cycles = 1ms
     while (x-- > 0) // while x > 0, continue. decreament x each clk. once x=0, leave loop
-      _asm("nop"); // nothing happens when decreamenting 0
+      __asm__("NOP"); // nothing happens when decreamenting 0
   }
 }
 ////////
@@ -158,7 +158,7 @@ void GPIOinit() {
 
   GPIOA_OSPEEDR |= (0b11 << 12); // set pin PA6 as q fast output
 
-  GPIOA_MODER &= ~(0b11 << 12); // set pin PA6 MODER
+  GPIOA_MODER &= ~(0b11 << 12); // reset pin PA6 MODER
   GPIOA_MODER |= (0b10 << 12); // se pin PA6 to alternate function
 }
 
@@ -179,7 +179,7 @@ void TIMinit() {
 
   TIM16_CCR1 |= (30303); // set duty cycle to be half the limit of the counter (50%ds)
 
-  TIM16_CCER |= (1 << 2); // requirement for MOE to effectively output
+  TIM16_CCER |= (1 << 0); // requirement for MOE to effectively output
 
   TIM16_BDTR |= (1 << 15); // en Main Output Enable (MOE) in Dead Time Register (DTR)
 }
@@ -187,7 +187,7 @@ void TIMinit() {
 /////////////////////////////////////////////////////////////////////////////////////
 
 // Function that converts frequency input into 
-voit FREQset(int freq) { // take a desired input frequency "freq"
+void FREQset(int freq) { // take a desired input frequency "freq"
   int ARRnew = (1320/freq);
   TIM16_ARR |= ARRnew;
   TIM16_CCR1 |= (ARRnew/2);
