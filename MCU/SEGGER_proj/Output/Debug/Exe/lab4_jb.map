@@ -6,8 +6,8 @@
 
 Linker version:
 
-  SEGGER ARM Linker 4.38.14 compiled Aug 21 2024 18:37:20
-  Copyright (c) 2017-2024 SEGGER Microcontroller GmbH    www.segger.com
+  SEGGER ARM Linker 4.38.6 compiled Nov 27 2023 14:51:17
+  Copyright (c) 2017-2022 SEGGER Microcontroller GmbH    www.segger.com
 
 
 ***********************************************************************************************
@@ -20,9 +20,9 @@ Memory use by input file:
 
   Object File                                       RX Code     RO Data     RW Data     ZI Data
   ---------------------------------------------  ----------  ----------  ----------  ----------
-  main.o                                                590         872                        
+  main.o                                                594         872                        
   SEGGER_THUMB_Startup.o                                 20                                    
-  STM32L432KC_RCC.o                                     180                                    
+  STM32L432KC_RCC.o                                     176                                    
   stm32l432xx_Vectors.o                                 532                                    
   STM32L4xx_Startup.o                                    64                                    
   system_stm32l4xx.o                                    428          64           4            
@@ -85,11 +85,11 @@ Sections by address:
   0800019c-080001cb  MSIRangeTable                      48   4  Cnst  RO  system_stm32l4xx.o
   080001cc-08000223  SystemInit                         88   4  Code  RX  system_stm32l4xx.o
   08000224-08000377  SystemCoreClockUpdate             340   4  Code  RX  system_stm32l4xx.o
-  08000378-080003ff  configurePLL                      136   4  Code  RX  STM32L432KC_RCC.o
-  08000400-0800042b  configureClock                     44   4  Code  RX  STM32L432KC_RCC.o
-  0800042c-08000793  notes                             872   4  Cnst  RO  main.o
-  08000794-080007f3  GPIOinit                           96   4  Code  RX  main.o
-  080007f4-080008a3  TIMinit                           176   4  Code  RX  main.o
+  08000378-080003fb  configurePLL                      132   4  Code  RX  STM32L432KC_RCC.o
+  080003fc-08000427  configureClock                     44   4  Code  RX  STM32L432KC_RCC.o
+  08000428-0800078f  notes                             872   4  Cnst  RO  main.o
+  08000790-080007ef  GPIOinit                           96   4  Code  RX  main.o
+  080007f0-080008a3  TIMinit                           180   4  Code  RX  main.o
   080008a4-080008f7  FREQset                            84   4  Code  RX  main.o
   080008f8-0800090f  CNTen                              24   4  Code  RX  main.o
   08000910-08000927  CNTdisable                         24   4  Code  RX  main.o
@@ -226,7 +226,7 @@ Function symbols by name:
   FLASH_IRQHandler           0x08000A0B                  2  Code  Wk  stm32l432xx_Vectors.o
   FPU_IRQHandler             0x08000A77                  2  Code  Wk  stm32l432xx_Vectors.o
   FREQset                    0x080008A5          84      4  Code  Gb  main.o
-  GPIOinit                   0x08000795          96      4  Code  Gb  main.o
+  GPIOinit                   0x08000791          96      4  Code  Gb  main.o
   HardFault_Handler          0x08000999                  4  Code  Wk  STM32L4xx_Startup.o
   I2C1_ER_IRQHandler         0x08000A3F                  2  Code  Wk  stm32l432xx_Vectors.o
   I2C1_EV_IRQHandler         0x08000A3D                  2  Code  Wk  stm32l432xx_Vectors.o
@@ -261,7 +261,7 @@ Function symbols by name:
   TIM2_IRQHandler            0x08000A3B                  2  Code  Wk  stm32l432xx_Vectors.o
   TIM6_DAC_IRQHandler        0x08000A4D                  2  Code  Wk  stm32l432xx_Vectors.o
   TIM7_IRQHandler            0x08000A4F                  2  Code  Wk  stm32l432xx_Vectors.o
-  TIMinit                    0x080007F5         176      4  Code  Gb  main.o
+  TIMinit                    0x080007F1         180      4  Code  Gb  main.o
   TSC_IRQHandler             0x08000A73                  2  Code  Wk  stm32l432xx_Vectors.o
   USART1_IRQHandler          0x08000A43                  2  Code  Wk  stm32l432xx_Vectors.o
   USART2_IRQHandler          0x08000A45                  2  Code  Wk  stm32l432xx_Vectors.o
@@ -273,8 +273,8 @@ Function symbols by name:
   __SEGGER_init_done         0x0800098F                  4  Code  Gb  SEGGER_THUMB_Startup.o
   __startup_complete         0x0800098F                  4  Code  Gb  SEGGER_THUMB_Startup.o
   _start                     0x08000985          14      4  Code  Gb  SEGGER_THUMB_Startup.o
-  configureClock             0x08000401          44      4  Code  Gb  STM32L432KC_RCC.o
-  configurePLL               0x08000379         136      4  Code  Gb  STM32L432KC_RCC.o
+  configureClock             0x080003FD          44      4  Code  Gb  STM32L432KC_RCC.o
+  configurePLL               0x08000379         132      4  Code  Gb  STM32L432KC_RCC.o
   delay                      0x08000A7B          44      2  Code  Gb  main.o
   exit                       0x08000993           2      4  Code  Gb  SEGGER_THUMB_Startup.o
   main                       0x08000929          92      4  Code  Gb  main.o
@@ -287,10 +287,10 @@ Function symbols by address:
   ----------  -------------------------  ----------  -----  ----  --  -----------
   0x080001CD  SystemInit                         88      4  Code  Gb  system_stm32l4xx.o
   0x08000225  SystemCoreClockUpdate             340      4  Code  Gb  system_stm32l4xx.o
-  0x08000379  configurePLL                      136      4  Code  Gb  STM32L432KC_RCC.o
-  0x08000401  configureClock                     44      4  Code  Gb  STM32L432KC_RCC.o
-  0x08000795  GPIOinit                           96      4  Code  Gb  main.o
-  0x080007F5  TIMinit                           176      4  Code  Gb  main.o
+  0x08000379  configurePLL                      132      4  Code  Gb  STM32L432KC_RCC.o
+  0x080003FD  configureClock                     44      4  Code  Gb  STM32L432KC_RCC.o
+  0x08000791  GPIOinit                           96      4  Code  Gb  main.o
+  0x080007F1  TIMinit                           180      4  Code  Gb  main.o
   0x080008A5  FREQset                            84      4  Code  Gb  main.o
   0x080008F9  CNTen                              24      4  Code  Gb  main.o
   0x08000911  CNTdisable                         24      4  Code  Gb  main.o
@@ -380,8 +380,8 @@ Function symbols by descending size:
   Symbol name                      Size  Align  Type  Bd  Object File
   -------------------------  ----------  -----  ----  --  -----------
   SystemCoreClockUpdate             340      4  Code  Gb  system_stm32l4xx.o
-  TIMinit                           176      4  Code  Gb  main.o
-  configurePLL                      136      4  Code  Gb  STM32L432KC_RCC.o
+  TIMinit                           180      4  Code  Gb  main.o
+  configurePLL                      132      4  Code  Gb  STM32L432KC_RCC.o
   GPIOinit                           96      4  Code  Gb  main.o
   main                               92      4  Code  Gb  main.o
   SystemInit                         88      4  Code  Gb  system_stm32l4xx.o
@@ -495,7 +495,7 @@ Read-only data symbols by name:
   MSIRangeTable              0x0800019C          48      4  Cnst  Gb  system_stm32l4xx.o
   __SEGGER_init_data__       0x08000B00         [4]      4  Cnst  Lc  [ Linker created ]
   __SEGGER_init_table__      0x08000AE8        [24]      4  Cnst  Lc  [ Linker created ]
-  notes                      0x0800042C         872      4  Cnst  Gb  main.o
+  notes                      0x08000428         872      4  Cnst  Gb  main.o
 
 Read-only data symbols by address:
 
@@ -503,7 +503,7 @@ Read-only data symbols by address:
   ----------  -------------------------  ----------  -----  ----  --  -----------
   0x0800018C  AHBPrescTable                      16      4  Cnst  Gb  system_stm32l4xx.o
   0x0800019C  MSIRangeTable                      48      4  Cnst  Gb  system_stm32l4xx.o
-  0x0800042C  notes                             872      4  Cnst  Gb  main.o
+  0x08000428  notes                             872      4  Cnst  Gb  main.o
   0x08000AE8  __SEGGER_init_table__            [24]      4  Cnst  Lc  [ Linker created ]
   0x08000B00  __SEGGER_init_data__              [4]      4  Cnst  Lc  [ Linker created ]
 
