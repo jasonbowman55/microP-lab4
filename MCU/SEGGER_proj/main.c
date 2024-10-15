@@ -8,20 +8,20 @@
 
 // TIM16
 #define TIM16_BASE (0x40014400) // TIM16 BASE register
-#define TIM16_CR1 (*(uint16_t*)(TIM16_BASE + 0x00)) // control register
-#define TIM16_CCMR1 (*(uint32_t *)(TIM16_BASE + 0x18)) // capture compare MODE regiter
-#define TIM16_CCER (*(uint16_t*)(TIM16_BASE + 0x20)) // capture compare enable register
-#define TIM16_PSC (*(uint16_t*)(TIM16_BASE + 0x28)) // prescalar register
-#define TIM16_ARR (*(uint16_t*)(TIM16_BASE + 0x2C)) // auto reload register
-#define TIM16_EGR (*(uint16_t*)(TIM16_BASE + 0x14)) // event generation register
-#define TIM16_CCR1 (*(uint16_t*)(TIM16_BASE + 0x34)) // capture compare register
-#define TIM16_BDTR (*(uint32_t*)(TIM16_BASE + 0x44)) // break & deadtime state register
+#define TIM16_CR1 (*(volatile uint16_t*)(TIM16_BASE + 0x00)) // control register
+#define TIM16_CCMR1 (*(volatile uint32_t*)(TIM16_BASE + 0x18)) // capture compare MODE regiter
+#define TIM16_CCER (*(volatile uint16_t*)(TIM16_BASE + 0x20)) // capture compare enable register
+#define TIM16_PSC (*(volatile uint16_t*)(TIM16_BASE + 0x28)) // prescalar register
+#define TIM16_ARR (*(volatile uint16_t*)(TIM16_BASE + 0x2C)) // auto reload register
+#define TIM16_EGR (*(volatile uint16_t*)(TIM16_BASE + 0x14)) // event generation register
+#define TIM16_CCR1 (*(volatile uint16_t*)(TIM16_BASE + 0x34)) // capture compare register
+#define TIM16_BDTR (*(volatile uint32_t*)(TIM16_BASE + 0x44)) // break & deadtime state register
 
 // GPIO
 #define GPIOA_BASE (0x48000000)
-#define GPIOA_MODER (*(uint32_t*)(GPIOA_BASE + 0x00)) // GPIO mode register
-#define GPIOA_OSPEEDR (*(uint32_t*)(GPIOA_BASE + 0x08)) // GPIO register speed select
-#define GPIOA_AFRL (*(uint32_t*)(GPIOA_BASE + 0x20)) // GPIO alternate function control register
+#define GPIOA_MODER (*(volatile uint32_t*)(GPIOA_BASE + 0x00)) // GPIO mode register
+#define GPIOA_OSPEEDR (*(volatile uint32_t*)(GPIOA_BASE + 0x08)) // GPIO register speed select
+#define GPIOA_AFRL (*(volatile uint32_t*)(GPIOA_BASE + 0x20)) // GPIO alternate function control register
 
 // Access RCC rubregisters via .h file
 
@@ -221,6 +221,7 @@ void playNote(int freq, int time) {
 
 int main(void) {
   configureClock();
+//  TIMinit();
   GPIOinit();
   TIMinit();
 
