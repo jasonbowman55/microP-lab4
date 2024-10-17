@@ -4,6 +4,7 @@
 
 
 #include "STM32L432KC_RCC.h"
+#include "STM32L432KC_FLASH.h"
 #include <stdint.h>
 
 // TIM16
@@ -220,8 +221,9 @@ void playNote(int freq, int time) {
 }
 
 int main(void) {
+  configureFlash();
   configureClock();
-//  TIMinit();
+  TIMinit();
   GPIOinit();
   TIMinit();
 
