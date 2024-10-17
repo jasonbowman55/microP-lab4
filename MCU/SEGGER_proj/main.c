@@ -223,7 +223,6 @@ void playNote(int freq, int time) {
 int main(void) {
   configureFlash();
   configureClock();
-  TIMinit();
   GPIOinit();
   TIMinit();
 
