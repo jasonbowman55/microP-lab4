@@ -143,7 +143,7 @@ const int notes[][2] = {
 // DELAY
 void delay(int ms) { // take input ms from any delay calls
   while (ms-- > 0) { // while ms > 0, continue. decreament each ms, once ms=0, leave loop
-    volatile int x=887; // x clk cycles = 1ms
+    volatile int x=1000; // x clk cycles = 1ms
     while (x-- > 0) // while x > 0, continue. decreament x each clk. once x=0, leave loop
       __asm__("NOP"); // nothing happens when decreamenting 0
   }

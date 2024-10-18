@@ -10,6 +10,9 @@ void configurePLL() {
     // M: XX, N: XX, R: XX
     // Use MSI as PLLSRC
 
+    //RCC->CR &= ~(0b1111 << 4);
+    //RCC->CR |= (0b0111 << 4);
+
     // TODO: Turn off PLL
         RCC->CR &= ~(1 << 24);
     // TODO: Wait till PLL is unlocked (e.g., off)
@@ -20,10 +23,10 @@ void configurePLL() {
     // Load configuration
     // TODO: Set PLL SRC to MSI
     //    RCC->PLLCFGR &= (1 << 0); //ORIGINAL
-          RCC->PLLCFGR |= (0b01 << 0); //CHANGED
+        RCC->PLLCFGR |= (0b01 << 0); //CHANGED
     // TODO: Set PLLN
         RCC->PLLCFGR &= ~(0b1111111 << 8); //clear PLLN --- WHY IS THIS 0b?
-        RCC->PLLCFGR |= (0b0000010 << 8); //PLLN = 80 --- PLLN IS ONLY 7 BIT?
+        RCC->PLLCFGR |= (0b0001000 << 8); //PLLN = 80 --- PLLN IS ONLY 7 BIT?
 
     // TODO: Set PLLM
         RCC->PLLCFGR &= ~(0b111 << 4); //clear PLLM
