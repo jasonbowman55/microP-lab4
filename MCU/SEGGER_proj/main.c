@@ -5,6 +5,7 @@
 
 #include "STM32L432KC_RCC.h"
 #include "STM32L432KC_FLASH.h"
+#include "STM32L432KC_GPIO.h"
 #include <stdint.h>
 
 // TIM16
@@ -178,7 +179,7 @@ void TIMinit() {
   TIM16_CCR1 |= (32767); // set duty cycle to be half the limit of the counter (50%ds)
 
   TIM16_PSC &= ~(65535); // clear PSC
-  TIM16_PSC |= (60606); // set prescale such that max period length corresponds to lowest freq for 1 period (80MHz / (660Hz*2))
+  TIM16_PSC |= (255); // set prescale such that max period length corresponds to lowest freq for 1 period (80MHz / (660Hz*2))
 
   TIM16_BDTR |= (1 << 15); // en Main Output Enable (MOE) in Dead Time Register (DTR)
 
@@ -189,9 +190,10 @@ void TIMinit() {
 
 // Function that converts frequency input into 
 void FREQset(int freq) { // take a desired input frequency "freq"
-  int ARRnew = (1320/freq);
+  int ARRnew = (31250/freq);
   TIM16_ARR &= ~(65535);
   TIM16_ARR |= ARRnew;
+  TIM16_CCR1 &= ~(65535);
   TIM16_CCR1 |= (ARRnew/2);
 }
 ///////////////////////////

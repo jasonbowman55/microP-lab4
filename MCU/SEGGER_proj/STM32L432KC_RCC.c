@@ -19,19 +19,19 @@ void configurePLL() {
 
     // Load configuration
     // TODO: Set PLL SRC to MSI
-    //    RCC->CFGR &= (1 << 0); //ORIGINAL
-        RCC->PLLCFGR |= (0b01 << 0); //CHANGED
+    //    RCC->PLLCFGR &= (1 << 0); //ORIGINAL
+          RCC->PLLCFGR |= (0b01 << 0); //CHANGED
     // TODO: Set PLLN
-        //RCC->CFGR &= ~(0b11111111 << 8); //clear PLLN --- WHY IS THIS 0b?
-        RCC->PLLCFGR |= (0b1010000 << 8); //PLLN = 80 --- PLLN IS ONLY 7 BIT?
+        RCC->PLLCFGR &= ~(0b1111111 << 8); //clear PLLN --- WHY IS THIS 0b?
+        RCC->PLLCFGR |= (0b0000010 << 8); //PLLN = 80 --- PLLN IS ONLY 7 BIT?
 
     // TODO: Set PLLM
-        //RCC->CFGR &= ~(0b111 << 4); //clear PLLM
+        RCC->PLLCFGR &= ~(0b111 << 4); //clear PLLM
         RCC->PLLCFGR |= (0b000 << 4); //PLLM = 1
 
     // TODO: Set PLLR
-        //RCC->CFGR &= ~(0b11 << 25); //clear PLLR
-        RCC->PLLCFGR |= (0b01 << 25); //PLLR = 4
+        RCC->PLLCFGR &= ~(1 << 26); //clear PLLR
+        RCC->PLLCFGR |= (1 << 25); //PLLR = 4
     
     // TODO: Enable PLLR output
         RCC->PLLCFGR |= (1 << 24); //connect PLLREN
