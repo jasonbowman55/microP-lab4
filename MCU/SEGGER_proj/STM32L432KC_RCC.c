@@ -26,7 +26,7 @@ void configurePLL() {
         RCC->PLLCFGR |= (0b01 << 0); //CHANGED
     // TODO: Set PLLN
         RCC->PLLCFGR &= ~(0b1111111 << 8); //clear PLLN --- WHY IS THIS 0b?
-        RCC->PLLCFGR |= (0b0001000 << 8); //PLLN = 80 --- PLLN IS ONLY 7 BIT?
+        RCC->PLLCFGR |= (0b0001000 << 8); //PLLN = 8 --- PLLN IS ONLY 7 BIT?
 
     // TODO: Set PLLM
         RCC->PLLCFGR &= ~(0b111 << 4); //clear PLLM

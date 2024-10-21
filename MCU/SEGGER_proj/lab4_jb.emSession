@@ -62,5 +62,5 @@
   <SessionOpenFile windowGroup="DockEditLeft" x="26" y="80" useTextEdit="1" path="STM32L432KC_RCC.h" left="0" top="37" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="8" useTextEdit="1" path="STM32L432KC_FLASH.c" left="0" top="0" codecName="Default"/>
  </Files>
- <EMStudioWindow activeProject="lab4_jb" fileDialogDefaultFilter="*" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="/Users/jasonbowman/Desktop/Micro-Ps/microP-lab4/MCU/SEGGER_proj" debugSearchPath="" autoConnectCapabilities="3711"/>
+ <EMStudioWindow activeProject="lab4_jb" fileDialogDefaultFilter="*" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="/Users/jasonbowman/Desktop/Micro-Ps/microP-lab4/MCU/SEGGER_proj" debugSearchPath="" autoConnectCapabilities="3199"/>
 </session>
